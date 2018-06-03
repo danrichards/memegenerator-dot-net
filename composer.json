@@ -1,0 +1,32 @@
+{
+  "name": "dan/memegenerator",
+  "description": "A memeGenerator.net API client using the latest Guzzle with optional Laravel integration.",
+  "license": "MIT",
+  "keywords": ["memes", "api", "laravel", "memegenerator.net"],
+  "type": "project",
+  "authors": [
+    {
+      "name": "Dan Richards",
+      "email": "danrichardsri@gmail.com"
+    }
+  ],
+  "autoload" : {
+    "psr-4": {
+      "Dan\\MemeGenerator\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.6.4",
+    "guzzlehttp/guzzle": "^6.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.3"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Dan\\MemeGenerator\\Support\\Laravel\\ServiceProvider"
+      ]
+    }
+  }
+}
