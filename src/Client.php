@@ -199,4 +199,12 @@ class Client
     {
         return $this->last_warning;
     }
+
+    /**
+     * @return BaseClient
+     */
+    public function getClient(): BaseClient
+    {
+        return $this->client;
+    }
 }

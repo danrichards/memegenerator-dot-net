@@ -2,7 +2,7 @@
 
 An MemeGenerator.net API Client for PHP. 
 
-## Supported Endpoints:
+## Supported APIs:
 
 * [Comment](http://version1.api.memegenerator.net/#Comment_Create)
 * [Comments](http://version1.api.memegenerator.net/#Comments_Select)
@@ -22,25 +22,30 @@ An MemeGenerator.net API Client for PHP.
 
 ## Composer
 
-    $ composer require dan/memegenerator-dot-net-api v1.0.*
+    $ composer require dan/memegenerator v1.0.*
     
 ## Usage without Laravel
 
 ```
 // Assumes setup of client with access token.
-$api = new \Dan\MemeGenerator\Client(
+$client = new \Dan\MemeGenerator\Client(
     $username = '<memegenerator.username>',
     $password = '<memegenerator.password>',
     $api_key = '<memegenerator.api_key>'
 );
 
 // Returns array
-$api->instances->selectByPopular();
+$client->instances->selectByPopular();
+```
+
+### You may also pass arguments as follows:
+
+```
+// For example, we can return the 2nd page of results
+$client->instances->selectByPopular(['pageIndex' => 1]);
 ```
 
 ## Usage with Laravel
-
-### Publish the config file.
 
 The package will auto-discover with Laravel 5.5 or higher, otherwise
 
@@ -48,4 +53,52 @@ The package will auto-discover with Laravel 5.5 or higher, otherwise
 
     Dan\MemeGenerator\Support\Laravel\MemeGeneratorServiceProvider::class,
     
+
+### Publish the config file.
+
+    $ php artisan vendor:publish --provider="Dan\MemeGenerator\Support\Laravel\MemeGeneratorServiceProvider"
+
+### Get the client
+
+```
+$client = app(Dan\MemeGenerator\Client::class);
+
+// Do stuff
+$client->pick_an_api->doStuffWithAnEndpoint();
+```
+
+## General Usage
+
+### 1. Get the client
+
+```
+$client = app(Dan\MemeGenerator\Client::class);
+```
+
+### 2. Select the API with property reference
+
+```
+// Returns Dan\MemeGenerator\Client prepared for the `instances` API
+$client = $api->instances
+```
+
+### 3. Make your request
+
+```
+// Returns array
+$arr = $client->instances->selectByPopular();
+```
+
+## Architecture Concept
+
+- The `Dan\MemeGenerator\Client` class decorates `GuzzleHttp\Client`
+- On the decorator, `__get` provides syntactical sugar for selecting an API.
+- On the decorator, `__call` provides syntactical sugar for executing requests
+
+Everything to boils down to `execute` being called on `Dan\MemeGenerator\Client`
+
+> If necessary, you can use the Guzzle client directly.
+
+```
+$base_client = $client->getClient();
 ```
